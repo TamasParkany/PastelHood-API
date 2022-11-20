@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const stripe = require("stripe")(process.env.STRIPE_LIVE_KEY);
 const express = require("express");
 const cors = require("cors");
 const serverless = require("serverless-http");
@@ -11,7 +11,7 @@ const router = express.Router();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5500",
+    origin: `${process.env.CLIENT_URL}`,
   })
 );
 
@@ -19,19 +19,18 @@ function fillCheckout(item) {
   switch (item.id) {
     case "f22ro":
       if (item.size === "XS") {
-        return "price_1M5G0vDWw7KIDNJZRiNQvriZ";
+        return "price_1M5PYvDWw7KIDNJZLbcIFA7u";
       } else if (item.size === "S") {
-        return "price_1M5G1iDWw7KIDNJZjggF6Mzs";
+        return "price_1M5PZZDWw7KIDNJZlPgYngC0";
       } else if (item.size === "M") {
-        return "price_1M5Ey9DWw7KIDNJZwcrCrJpT";
+        return "price_1M5PZiDWw7KIDNJZk4pg0NV4";
       } else if (item.size === "L") {
-        return "price_1M5G2pDWw7KIDNJZK2O7mAJK";
+        return "price_1M5PZvDWw7KIDNJZHPVlipDI";
       } else if (item.size === "XL") {
-        return "price_1M5G3DDWw7KIDNJZzZ8FukqC";
+        return "price_1M5Pa2DWw7KIDNJZuw2vIpeN";
       } else {
-        return "price_1M5G3UDWw7KIDNJZ4dcVxzCR";
+        return "price_1M5Pa8DWw7KIDNJZlpEWwTCt";
       }
-    //NOOOOOOOOOOOOOOOOOOOOOOOOOO
     case "f22s":
       if (item.size === "XS") {
         return "price_1M5PaRDWw7KIDNJZj7aNTU0S";
@@ -70,8 +69,8 @@ router.post("/create-checkout-session", async (req, res) => {
       mode: "payment",
       shipping_address_collection: { allowed_countries: ["CZ", "SK"] },
       shipping_options: [
-        { shipping_rate: "shr_1M61pDDWw7KIDNJZulhJ1DXZ" },
-        { shipping_rate: "shr_1M61plDWw7KIDNJZK3nAnA7f" },
+        { shipping_rate: "shr_1M63enDWw7KIDNJZ2ElqyftD" },
+        { shipping_rate: "shr_1M63erDWw7KIDNJZ8dsT7wL2" },
       ],
       phone_number_collection: {
         enabled: true,
@@ -80,8 +79,8 @@ router.post("/create-checkout-session", async (req, res) => {
         price: `${fillCheckout(item)}`,
         quantity: item.quantity,
       })),
-      success_url: `${process.env.CLIENT_URL}/success.html`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
+      success_url: `${process.env.CLIENT_URL}/success/index.html`,
+      cancel_url: `${process.env.CLIENT_URL}`,
     });
     res.json({ url: session.url });
   } catch (e) {
@@ -89,9 +88,10 @@ router.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-router.get("/status", (req, res) => {
+router.get("/", (req, res) => {
   res.json({
     status: "live",
+    process: "serving-stripe",
   });
 });
 
