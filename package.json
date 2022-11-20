@@ -4,9 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "devStart": "nodemon server.js",
     "start": "netlify-lambda serve functions",
-    "build": "netlify-lambda build lambda"
+    "build": "netlify-lambda build functions"
   },
   "keywords": [],
   "author": "Tamas Parkany",
@@ -18,8 +17,5 @@
     "netlify-lambda": "^2.0.15",
     "serverless-http": "^3.1.0",
     "stripe": "^11.1.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
   }
 }
