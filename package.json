@@ -1,0 +1,25 @@
+{
+  "name": "pastelhoodnode",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "devStart": "nodemon server.js",
+    "start": "netlify-lambda serve functions",
+    "build": "netlify-lambda build functions"
+  },
+  "keywords": [],
+  "author": "Tamas Parkany",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "netlify-lambda": "^2.0.15",
+    "serverless-http": "^3.1.0",
+    "stripe": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
