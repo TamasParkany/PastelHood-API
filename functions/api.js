@@ -15,55 +15,35 @@ app.use(
   })
 );
 
-function fillCheckout(item) {
-  switch (item.id) {
-    case "f22ro":
-      if (item.size === "XS") {
-        return "price_1M6e32DWw7KIDNJZrqym1glO";
-      } else if (item.size === "S") {
-        return "price_1M6e3rDWw7KIDNJZeAUwPKeV";
-      } else if (item.size === "M") {
-        return "price_1M6e4FDWw7KIDNJZatfGbWhH";
-      } else if (item.size === "L") {
-        return "price_1M6e4ZDWw7KIDNJZkmXouKR0";
-      } else if (item.size === "XL") {
-        return "price_1M6e4yDWw7KIDNJZ7ctz0kuR";
-      } else {
-        return "price_1M6e5GDWw7KIDNJZfrR3MQld";
-      }
-    case "f22s":
-      if (item.size === "XS") {
-        return "price_1M6e5ZDWw7KIDNJZ1LRirZCN";
-      } else if (item.size === "S") {
-        return "price_1M6e5xDWw7KIDNJZsSdyv8h9";
-      } else if (item.size === "M") {
-        return "price_1M6e8FDWw7KIDNJZ1EPdBp56";
-      } else if (item.size === "L") {
-        return "price_1M6e9MDWw7KIDNJZy5KZAmRV";
-      } else if (item.size === "XL") {
-        return "price_1M6e9jDWw7KIDNJZIVF8w45i";
-      } else if (item.size === "XXL") {
-        return "price_1M6eA7DWw7KIDNJZVI5pc9jl";
-        //test item
-      } else {
-        return "price_1M6iTyDWw7KIDNJZVBLoHe2I";
-      }
-    case "f22lwu":
-      if (item.size === "XS") {
-        return "price_1M6eAQDWw7KIDNJZEV2IBGUR";
-      } else if (item.size === "S") {
-        return "price_1M6eB4DWw7KIDNJZPPsPtqbA";
-      } else if (item.size === "M") {
-        return "price_1M6eBQDWw7KIDNJZkXrfn3Xw";
-      } else if (item.size === "L") {
-        return "price_1M6eBlDWw7KIDNJZnEu2XOh1";
-      } else if (item.size === "XL") {
-        return "price_1M6eC8DWw7KIDNJZYdXMU8N2";
-      } else {
-        return "price_1M6eCgDWw7KIDNJZHg78Pl3M";
-      }
-  }
-}
+const priceList = {
+  f22ro: {
+    XS: "price_1M6e32DWw7KIDNJZrqym1glO",
+    S: "price_1M6e3rDWw7KIDNJZeAUwPKeV",
+    M: "price_1M6e4FDWw7KIDNJZatfGbWhH",
+    L: "price_1M6e4ZDWw7KIDNJZkmXouKR0",
+    XL: "price_1M6e4yDWw7KIDNJZ7ctz0kuR",
+    XXL: "price_1M6e5GDWw7KIDNJZfrR3MQld",
+  },
+  f22s: {
+    XS: "price_1M6e5ZDWw7KIDNJZ1LRirZCN",
+    S: "price_1M6e5xDWw7KIDNJZsSdyv8h9",
+    M: "price_1M6e8FDWw7KIDNJZ1EPdBp56",
+    L: "price_1M6e9MDWw7KIDNJZy5KZAmRV",
+    XL: "price_1M6e9jDWw7KIDNJZIVF8w45i",
+    XXL: "price_1M6eA7DWw7KIDNJZVI5pc9jl",
+  },
+  f22lwu: {
+    XS: "price_1M6eAQDWw7KIDNJZEV2IBGUR",
+    S: "price_1M6eB4DWw7KIDNJZPPsPtqbA",
+    M: "price_1M6eBQDWw7KIDNJZkXrfn3Xw",
+    L: "price_1M6eBlDWw7KIDNJZnEu2XOh1",
+    XL: "price_1M6eC8DWw7KIDNJZYdXMU8N2",
+    XXL: "price_1M6eCgDWw7KIDNJZHg78Pl3M",
+  },
+  test: {
+    X: "price_1M6iTyDWw7KIDNJZVBLoHe2I",
+  },
+};
 
 router.post("/create-checkout-session", async (req, res) => {
   try {
@@ -79,7 +59,7 @@ router.post("/create-checkout-session", async (req, res) => {
         enabled: true,
       },
       line_items: req.body.items.map((item) => ({
-        price: `${fillCheckout(item)}`,
+        price: priceList[item.id][item.size],
         quantity: item.quantity,
       })),
       success_url: `${process.env.CLIENT_URL}/success/index.html`,
